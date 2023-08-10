@@ -2,8 +2,8 @@ import Albums from "./pages/Albums"
 import Artists from "./pages/Artists"
 import Singles from "./pages/Singles"
 import Album from "./pages/Album";
-import Singles from "./pages/EPs";
-import Album from "./pages/EP";
+import EPs from "./pages/EPs";
+import EP from "./pages/EP";
 import Footer from "./Footer"
 import Navbar from "./Navbar";
 
