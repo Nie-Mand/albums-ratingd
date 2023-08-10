@@ -11,9 +11,9 @@ export default function Wrapper() {
 }
 
 function EP({ id }: { id: string }) {
-  const { album, loading } = useAlbum(id, "EP")
+  const { album, loading } = useAlbum(id);
 
-  const { songs, loading: songsLoading } = useAlbumsSongs(id, "EP");
+  const { songs, loading: songsLoading } = useAlbumsSongs(id);
 
   if (loading || songsLoading || !album) {
     return <h1 className="py-40 text-center">Loading...</h1>;

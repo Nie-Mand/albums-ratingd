@@ -25,12 +25,8 @@ export function useAlbums(type: string = "ALBUM") {
   };
 }
 
-async function getAlbum(id: string, type: string = "ALBUM") {
-  const { data } = await supabase
-    .from("_albums")
-    .select()
-    .eq("id", id)
-    .eq("type", type);
+async function getAlbum(id: string) {
+  const { data } = await supabase.from("_albums").select().eq("id", id);
 
   if (!data || data.length === 0) {
     throw new Error("Album not found");
