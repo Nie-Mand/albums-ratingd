@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { supabase } from "./api";
 
 interface Album {
@@ -16,18 +17,11 @@ async function getAlbums() {
 }
 
 export function useAlbums() {
-  const [albums, setAlbums] = useState<Album[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getAlbums()
-      .then((data) => setAlbums(data))
-      .then(() => setLoading(false));
-  }, []);
+  const { isLoading, data } = useQuery("get-albums", getAlbums);
 
   return {
-    albums,
-    loading,
+    albums: data || [],
+    loading: isLoading,
   };
 }
 
@@ -42,17 +36,10 @@ async function getAlbum(id: string) {
 }
 
 export function useAlbum(id: string) {
-  const [album, setAlbum] = useState<Album | null>(null);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getAlbum(id)
-      .then((data) => setAlbum(data))
-      .then(() => setLoading(false));
-  }, []);
+  const { isLoading, data } = useQuery("get-album", () => getAlbum(id));
 
   return {
-    album,
-    loading,
+    album: data || null,
+    loading: isLoading,
   };
 }

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { supabase } from "./api";
 
 interface Song {
@@ -83,17 +84,10 @@ async function getSingles() {
 }
 
 export function useSingles() {
-  const [singles, setSongs] = useState<Song[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getSingles()
-      .then((data) => setSongs(data))
-      .then(() => setLoading(false));
-  }, []);
+  const { isLoading, data } = useQuery("get-singles", getSingles);
 
   return {
-    singles,
-    loading,
+    singles: data || [],
+    loading: isLoading,
   };
 }

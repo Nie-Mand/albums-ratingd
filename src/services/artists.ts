@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { supabase } from "./api";
 
 interface Artist {
@@ -18,17 +19,10 @@ async function getArtists() {
 }
 
 export function useArtists() {
-  const [artists, setArtists] = useState<Artist[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getArtists()
-      .then((data) => setArtists(data))
-      .then(() => setLoading(false));
-  }, []);
+  const { isLoading, data } = useQuery("get-artists", getArtists);
 
   return {
-    artists,
-    loading,
+    artists: data || [],
+    loading: isLoading,
   };
 }
