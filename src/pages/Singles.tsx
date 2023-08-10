@@ -1,3 +1,4 @@
+import { useSingles } from "@/services/songs";
 import { Route } from "wouter";
 
 interface Single {
@@ -9,39 +10,46 @@ interface Single {
   year: number;
 }
 
-const singles: Single[] = [
-  {
-    id: 1,
-    title: "The Dark Side of the Moon",
-    artist: "Pink Floyd",
-    cover:
-      "https://s11279.pcdn.co/wp-content/uploads/2023/07/utopia-630x630.jpg",
-    rating: 5,
-    year: 1973,
-  },
-];
-
-export default function Singles() {
+export default function Wrapper() {
   return (
     <Route path="/singles">
+      <Singles />
+    </Route>
+  );
+}
+
+function Singles() {
+  const { singles, loading } = useSingles();
+
+  if (loading) {
+    return <h1 className="py-40 text-center">Loading...</h1>;
+  }
+
+  return (
+    <div>
       <h1 className="py-4 text-3xl font-semibold text-center">Singles</h1>
-      <div className="c grid grid-cols-4">
-        {singles.map((album) => (
-          <div key={album.id} className="bg-[#212223] relative">
-            <img src={album.cover} alt={album.title} />
-            <div className="p-4">
-              <h3 className="text-2xl font-black">{album.title}</h3>
-              <h4 className="text-lg">
-                {album.artist}
-                <span className="text-xs ml-2">({album.year})</span>
-              </h4>
-            </div>
-            <div className="text-2xl text-purple-600 font-black absolute top-0 w-full">
-              {album.rating}
+      <div className="c grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+        {singles.map((single) => (
+          <div key={single.id} className="bg-[#212223]">
+            <img
+              src={single.cover}
+              alt={single.title}
+              className="w-full rounded-lg h-60 object-cover"
+            />
+            <div className="p-4 flex justify-between items-center">
+              <div>
+                <h3 className="text-2xl font-black">{single.artist}</h3>
+                <h4 className="text-lg">
+                  <span className="text-xs ml-2">({single.year})</span>
+                </h4>
+              </div>
+              <div className="text-4xl font-black">
+                {single.rate ? single.rate.toFixed(1) : "N/A"}
+              </div>
             </div>
           </div>
         ))}
       </div>
-    </Route>
+    </div>
   );
 }

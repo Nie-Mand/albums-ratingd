@@ -1,27 +1,8 @@
-import { Route, useRouter } from "wouter";
+import { useAlbum } from "@/services/albums";
+import { useAlbumsRating, useAlbumsSongs } from "@/services/songs";
+import { Link, Route, useRouter } from "wouter";
 
-interface Album {
-  id: number;
-  title: string;
-  artist: string;
-  cover: string;
-  rating: number;
-  year: number;
-}
-
-const albums: Album[] = [
-  {
-    id: 1,
-    title: "The Dark Side of the Moon",
-    artist: "Pink Floyd",
-    cover:
-      "https://s11279.pcdn.co/wp-content/uploads/2023/07/utopia-630x630.jpg",
-    rating: 5,
-    year: 1973,
-  },
-];
-
-export default function AlbumWrapper() {
+export default function Wrapper() {
   return (
     <Route path="/albums/:albumId">
       {({ albumId }) => <Album id={albumId} />}
@@ -30,34 +11,49 @@ export default function AlbumWrapper() {
 }
 
 function Album({ id }: { id: string }) {
+  const { album, loading } = useAlbum(id);
+
+  const { songs, loading: songsLoading } = useAlbumsSongs(id);
+  if (loading || songsLoading || !album) {
+    return <h1 className="py-40 text-center">Loading...</h1>;
+  }
+
   return (
     <div>
       <h1 className="py-4 text-3xl font-semibold text-center">{id}</h1>
       <div className="c grid grid-cols-4">
-        {albums.map((album) => (
-          <div key={album.id} className="bg-[#212223] relative">
-            <img src={album.cover} alt={album.title} />
-            <div className="p-4">
-              <h3 className="text-2xl font-black">{album.title}</h3>
-              <h4 className="text-lg">
-                {album.artist}
-                <span className="text-xs ml-2">({album.year})</span>
-              </h4>
+        <Link key={album.id} href={`/albums/${album.id}`}>
+          <a>
+            <div className="bg-[#212223]">
+              <img
+                src={album.cover}
+                alt={album.title}
+                className="w-full rounded-lg h-60 object-cover"
+              />
+              <div className="p-4 flex justify-between items-center">
+                <div>
+                  <h3 className="text-2xl font-black">{album.title}</h3>
+                  <h4 className="text-lg">
+                    {album.artist}
+                    <span className="text-xs ml-2">({album.year})</span>
+                  </h4>
+                </div>
+                <div className="text-4xl font-black">
+                  {album.rating.toFixed(1)}
+                </div>
+              </div>
             </div>
-            <div className="text-2xl text-purple-600 font-black absolute top-0 w-full">
-              {album.rating}
-            </div>
-          </div>
-        ))}
+          </a>
+        </Link>
 
-        <div className="font-sans col-span-3 grid grid-cols-2 gap-6 h-min">
-          {new Array(5).fill(0).map((_, i) => (
+        <div className="col-span-3 grid grid-cols-2 gap-6 h-min">
+          {songs.map((song, i) => (
             <div className="flex items-center space-x-4 px-6" key={i}>
-              <p className="text-xs">0. </p>
-              <h1 className="text-xl font-semibold">Song Title</h1>
-              <p className="text-xs">Featurings</p>
+              <p className="text-xs">{i + 1}. </p>
+              <h1 className="text-xl font-semibold">{song.title}</h1>
+              <p className="text-xs">{song.features?.join(", ")}</p>
               <div className="flex-1"></div>
-              <p className="text-xs">Rating</p>
+              <p className="text-xs">{song.rate}</p>
             </div>
           ))}
         </div>
