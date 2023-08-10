@@ -11,13 +11,13 @@ interface Album {
   rating: number;
 }
 
-async function getAlbums() {
-  const { data } = await supabase.from("_albums").select();
+async function getAlbums(type: string = "ALBUM") {
+  const { data } = await supabase.from("_albums").select().eq("type", type);
   return data as Album[];
 }
 
-export function useAlbums() {
-  const { isLoading, data } = useQuery("get-albums", getAlbums);
+export function useAlbums(type: string = "ALBUM") {
+  const { isLoading, data } = useQuery("get-albums", () => getAlbums(type));
 
   return {
     albums: data || [],
@@ -25,8 +25,12 @@ export function useAlbums() {
   };
 }
 
-async function getAlbum(id: string) {
-  const { data } = await supabase.from("_albums").select().eq("id", id);
+async function getAlbum(id: string, type: string = "ALBUM") {
+  const { data } = await supabase
+    .from("_albums")
+    .select()
+    .eq("id", id)
+    .eq("type", type);
 
   if (!data || data.length === 0) {
     throw new Error("Album not found");
@@ -35,8 +39,8 @@ async function getAlbum(id: string) {
   return data[0] as Album;
 }
 
-export function useAlbum(id: string) {
-  const { isLoading, data } = useQuery("get-album", () => getAlbum(id));
+export function useAlbum(id: string, type: string = "ALBUM") {
+  const { isLoading, data } = useQuery("get-album", () => getAlbum(id, type));
 
   return {
     album: data || null,
