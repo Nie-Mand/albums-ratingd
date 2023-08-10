@@ -4,7 +4,7 @@ import { Link, Route } from "wouter";
 
 export default function Wrapper() {
   return (
-    <Route path="/">
+    <Route path="/eps">
       <EPs />
     </Route>
   );
