@@ -35,8 +35,8 @@ async function getAlbum(id: string) {
   return data[0] as Album;
 }
 
-export function useAlbum(id: string, type: string = "ALBUM") {
-  const { isLoading, data } = useQuery("get-album", () => getAlbum(id, type));
+export function useAlbum(id: string) {
+  const { isLoading, data } = useQuery("get-album", () => getAlbum(id));
 
   return {
     album: data || null,
