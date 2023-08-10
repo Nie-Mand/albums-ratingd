@@ -23,7 +23,7 @@ function Album({ id }: { id: string }) {
       <h1 className="py-4 text-3xl font-semibold text-center">{id}</h1>
       <div className="c grid grid-cols-4">
         <Link key={album.id} href={`/albums/${album.id}`}>
-          <a>
+          <a className="col-span-4 md:col-span-1">
             <div className="bg-[#212223]">
               <img
                 src={album.cover}
@@ -46,7 +46,7 @@ function Album({ id }: { id: string }) {
           </a>
         </Link>
 
-        <div className="col-span-3 grid grid-cols-2 gap-6 h-min">
+        <div className="col-span-4 md:col-span-3 grid grid-cols-1 sm:grid-cols-2 gap-6 h-min">
           {songs.map((song, i) => (
             <div className="flex items-center space-x-4 px-6" key={i}>
               <p className="text-xs">{i + 1}. </p>
