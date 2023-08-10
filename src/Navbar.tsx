@@ -3,7 +3,7 @@ import { Link } from "wouter";
 export default function Navbar() {
     return (
       <div className="c flex justify-center">
-        <nav className="">
+        <nav className="py-4">
           <Link href="/">
             <a className="b">Albums</a>
           </Link>
