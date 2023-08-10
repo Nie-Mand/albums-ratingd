@@ -19,7 +19,9 @@ function EPs() {
 
   return (
     <div>
-      <h1 className="py-4 text-3xl font-semibold text-center">Albums</h1>
+      <h1 className="py-4 text-3xl font-semibold text-center">
+        Extended Plays
+      </h1>
       <div className="c grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
         {albums.map((album) => (
           <Link key={album.id} href={`/eps/${album.id}`}>
