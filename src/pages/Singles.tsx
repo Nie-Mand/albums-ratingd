@@ -38,8 +38,9 @@ function Singles() {
             />
             <div className="p-4 flex justify-between items-center">
               <div>
-                <h3 className="text-2xl font-black">{single.artist}</h3>
+                <h3 className="text-2xl font-black">{single.title}</h3>
                 <h4 className="text-lg">
+                  {single.artist}
                   <span className="text-xs ml-2">({single.year})</span>
                 </h4>
               </div>
