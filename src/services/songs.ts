@@ -14,7 +14,7 @@ interface Song {
 
 async function getAlbumsSongs(album: string) {
   const { data } = await supabase
-    .from("songs")
+    .from("_songs")
     .select()
     .eq("album", album)
     .order("created_at");
@@ -43,7 +43,7 @@ export function useAlbumsSongs(album: string) {
 
 async function getAlbumRating(album: string) {
   const { data } = await supabase
-    .from("songs")
+    .from("_songs")
     .select("avg(rate)")
     .eq("album", album);
 
@@ -72,7 +72,7 @@ export function useAlbumsRating(album: string) {
 
 async function getSingles() {
   const { data } = await supabase
-    .from("songs")
+    .from("_songs")
     .select()
     .is("album", null)
     .order("created_at");
